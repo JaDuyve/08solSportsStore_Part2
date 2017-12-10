@@ -40,6 +40,15 @@ namespace SportsStore.Models.Domain
                 line.Quantity++;
         }
 
+        public void DecreaseQuantity(int productId)
+        {
+            CartLine line = GetCartLine(productId);
+            if (line != null)
+                line.Quantity--;
+            if (line.Quantity <= 0)
+                _lines.Remove(line);
+        }
+
         public void Clear()
         {
             _lines.Clear();

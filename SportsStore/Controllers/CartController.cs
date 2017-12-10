@@ -41,11 +41,17 @@ namespace SportsStore.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         [HttpPost]
         public IActionResult Plus(int id, Cart cart)
         {
             cart.IncreaseQuantity(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult Min(int id, Cart cart)
+        {
+            cart.DecreaseQuantity(id);
             return RedirectToAction(nameof(Index));
         }
     }

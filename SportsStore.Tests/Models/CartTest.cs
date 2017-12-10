@@ -74,7 +74,6 @@ namespace SportsStore.Tests.Models
             Assert.Equal(90, _cart.TotalValue);
         }
 
-
         [Fact]
         public void IncreaseQuantity_ExistingLine_IncreasesQuantity()
         {
@@ -83,5 +82,20 @@ namespace SportsStore.Tests.Models
             Assert.Equal(11, _cart.CartLines.FirstOrDefault(l => l.Product.Equals(_p1))?.Quantity);
         }
 
+        [Fact]
+        public void DecreaseQuantity_ExistingLine_DecreasesQuantity()
+        {
+            _cart.AddLine(_p1, 10);
+            _cart.DecreaseQuantity(_p1.ProductId);
+            Assert.Equal(9, _cart.CartLines.FirstOrDefault(l => l.Product.Equals(_p1))?.Quantity);
+        }
+
+        [Fact]
+        public void DecreaseQuantity_ExistingLineWithQuantity1_RemovesLine()
+        {
+            _cart.AddLine(_p1, 1);
+            _cart.DecreaseQuantity(_p1.ProductId);
+            Assert.Equal(0, _cart.CartLines.Count());
+        }
     }
 }

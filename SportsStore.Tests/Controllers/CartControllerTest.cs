@@ -101,5 +101,22 @@ namespace SportsStore.Tests.Controllers
             Assert.Equal(3, line.Quantity);
         }
         #endregion
+
+        #region Min
+        [Fact]
+        public void Min_Successful_RedirectsToIndex()
+        {
+            var result = _controller.Min(1, _cart) as RedirectToActionResult;
+            Assert.Equal("Index", result?.ActionName);
+        }
+
+        [Fact]
+        public void Min_Successful_DecreasesQuantity()
+        {
+            _controller.Min(1, _cart);
+            CartLine line = _cart.CartLines.ToList()[0];
+            Assert.Equal(1, line.Quantity);
+        }
+        #endregion
     }
 }
