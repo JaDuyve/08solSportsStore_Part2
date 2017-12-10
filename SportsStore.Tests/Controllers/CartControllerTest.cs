@@ -20,6 +20,7 @@ namespace SportsStore.Tests.Controllers
 
             var productRepository = new Mock<IProductRepository>();
             productRepository.Setup(p => p.GetById(4)).Returns(context.RunningShoes);
+            productRepository.Setup(p => p.GetById(1)).Returns(context.Football);
 
             _controller = new CartController(productRepository.Object);
             _cart = new Cart();
@@ -68,5 +69,20 @@ namespace SportsStore.Tests.Controllers
         }
         #endregion
 
+        #region Remove
+        [Fact]
+        public void Remove_Successful_RedirectsToIndex()
+        {
+            var result = _controller.Remove(1, _cart) as RedirectToActionResult;
+            Assert.Equal("Index", result?.ActionName);
+        }
+
+        [Fact]
+        public void Remove_Successful_RemovesProductFromCart()
+        {
+            _controller.Remove(1, _cart);
+            Assert.Equal(0, _cart.NumberOfItems);
+        }
+        #endregion
     }
 }
