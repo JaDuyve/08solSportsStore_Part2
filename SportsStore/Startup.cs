@@ -6,6 +6,7 @@ using SportsStore.Data;
 using Microsoft.EntityFrameworkCore;
 using SportsStore.Models.Domain;
 using SportsStore.Data.Repositories;
+using SportsStore.Filters;
 
 namespace SportsStore
 {
@@ -25,6 +26,7 @@ namespace SportsStore
                options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<CartSessionFilter>();
             services.AddSession();
             services.AddMvc();
         }
