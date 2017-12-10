@@ -68,10 +68,18 @@ namespace SportsStore.Controllers
         [HttpPost]
         public IActionResult Create(EditViewModel editViewModel)
         {
-            var product = new Product();
-            MapToProduct(editViewModel, product);
-            _productRepository.Add(product);
-            _productRepository.SaveChanges();
+            try
+            {
+                var product = new Product();
+                MapToProduct(editViewModel, product);
+                _productRepository.Add(product);
+                _productRepository.SaveChanges();
+                TempData["message"] = $"You successfully added product {product.Name}.";
+            }
+            catch
+            {
+                TempData["error"] = "Sorry, something went wrong, the product was not added...";
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -87,9 +95,17 @@ namespace SportsStore.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            Product product = _productRepository.GetById(id);
-            _productRepository.Delete(product);
-            _productRepository.SaveChanges();
+            try
+            {
+                Product product = _productRepository.GetById(id);
+                _productRepository.Delete(product);
+                _productRepository.SaveChanges();
+                TempData["message"] = $"You successfully deleted product {product.Name}.";
+            }
+            catch
+            {
+                TempData["error"] = "Sorry, something went wrong, the product was not deleted...";
+            }
             return RedirectToAction(nameof(Index));
         }
 

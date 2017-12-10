@@ -6,6 +6,7 @@ using SportsStore.Controllers;
 using SportsStore.Models.Domain;
 using SportsStore.Models.ProductViewModels;
 using SportsStore.Tests.Data;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xunit;
@@ -189,14 +190,22 @@ namespace SportsStore.Tests.Controllers
             _mockProductRepository.Verify(m => m.SaveChanges(), Times.Once);
         }
 
-        [Fact(Skip = "Not implemented yet...")]
+        [Fact]
         public void CreateHttpPost_InvalidProduct_DoesNotCreateNorPersistsProduct()
         {
+            _mockProductRepository.Setup(m => m.Add(It.IsAny<Product>()));
+            var productVm = new EditViewModel(_nieuwProduct) { Price = -1 };
+            _productController.Create(productVm);
+            _mockProductRepository.Verify(m => m.SaveChanges(), Times.Never());
+            _mockProductRepository.Verify(m => m.Add(It.IsAny<Product>()), Times.Never());
         }
 
-        [Fact(Skip = "Not implemented yet...")]
+        [Fact]
         public void CreateHttpPost_InvalidProduct_RedirectsToActionIndex()
         {
+            var productVm = new EditViewModel(_nieuwProduct) { Price = -1 };
+            var action = _productController.Create(productVm) as RedirectToActionResult;
+            Assert.Equal("Index", action?.ActionName);
         }
 
         #endregion
@@ -233,13 +242,16 @@ namespace SportsStore.Tests.Controllers
         public void DeleteHttpPost_SuccessfullDelete_RedirectsToIndex()
         {
             _mockProductRepository.Setup(p => p.GetById(1)).Returns(_dummyContext.RunningShoes);
-            var result = _productController.DeleteConfirmed(_runningShoesId) as RedirectToActionResult;
+            var result = _productController.DeleteConfirmed(1) as RedirectToActionResult;
             Assert.Equal("Index", result?.ActionName);
         }
 
-        [Fact(Skip = "Not implemented yet...")]
+        [Fact]
         public void DeleteHttpPost_UnsuccessfullDelete_RedirectsToIndex()
         {
+            _mockProductRepository.Setup(p => p.GetById(1)).Throws<ArgumentException>();
+            var result = _productController.DeleteConfirmed(1) as RedirectToActionResult;
+            Assert.Equal("Index", result?.ActionName);
         }
         #endregion
     }
