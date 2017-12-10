@@ -29,6 +29,7 @@ namespace SportsStore.Controllers
             if (product != null)
             {
                 cart.AddLine(product, quantity);
+                TempData["message"] = "Product " + product.Name + " has been added to the cart";
             }
             return RedirectToAction(nameof(Index), "Store");
         }
@@ -38,6 +39,7 @@ namespace SportsStore.Controllers
         {
             Product product = _productRepository.GetById(id);
             cart.RemoveLine(product);
+            TempData["message"] = $"{product.Name} has been removed from the basket";
             return RedirectToAction(nameof(Index));
         }
 

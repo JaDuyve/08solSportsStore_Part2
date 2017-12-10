@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Moq;
 using SportsStore.Controllers;
 using SportsStore.Models.Domain;
@@ -22,7 +23,11 @@ namespace SportsStore.Tests.Controllers
             productRepository.Setup(p => p.GetById(4)).Returns(context.RunningShoes);
             productRepository.Setup(p => p.GetById(1)).Returns(context.Football);
 
-            _controller = new CartController(productRepository.Object);
+            _controller = new CartController(productRepository.Object)
+            {
+                TempData = new Mock<ITempDataDictionary>().Object
+            };
+
             _cart = new Cart();
             _cart.AddLine(context.Football, 2);
         }
