@@ -40,5 +40,13 @@ namespace SportsStore.Controllers
             cart.RemoveLine(product);
             return RedirectToAction(nameof(Index));
         }
+
+
+        [HttpPost]
+        public IActionResult Plus(int id, Cart cart)
+        {
+            cart.IncreaseQuantity(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

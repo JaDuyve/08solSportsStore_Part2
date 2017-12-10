@@ -84,5 +84,22 @@ namespace SportsStore.Tests.Controllers
             Assert.Equal(0, _cart.NumberOfItems);
         }
         #endregion
+
+        #region Plus
+        [Fact]
+        public void Plus_Successful_RedirectsToIndex()
+        {
+            var result = _controller.Plus(1, _cart) as RedirectToActionResult;
+            Assert.Equal("Index", result?.ActionName);
+        }
+
+        [Fact]
+        public void Plus_Successful_IncreasesQuantity()
+        {
+            _controller.Plus(1, _cart);
+            CartLine line = _cart.CartLines.ToList()[0];
+            Assert.Equal(3, line.Quantity);
+        }
+        #endregion
     }
 }

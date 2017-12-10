@@ -19,7 +19,7 @@ namespace SportsStore.Models.Domain
         #region Methods
         public void AddLine(Product product, int quantity)
         {
-            CartLine line = _lines.FirstOrDefault(l => l.Product.Equals(product));
+            CartLine line = GetCartLine(product.ProductId);
             if (line == null)
                 _lines.Add(new CartLine() { Product = product, Quantity = quantity });
             else
@@ -28,14 +28,26 @@ namespace SportsStore.Models.Domain
 
         public void RemoveLine(Product product)
         {
-            CartLine line = _lines.SingleOrDefault(l => l.Product.Equals(product));
+            CartLine line = GetCartLine(product.ProductId);
             if (line != null)
                 _lines.Remove(line);
+        }
+
+        public void IncreaseQuantity(int productId)
+        {
+            CartLine line = GetCartLine(productId);
+            if (line != null)
+                line.Quantity++;
         }
 
         public void Clear()
         {
             _lines.Clear();
+        }
+
+        private CartLine GetCartLine(int productId)
+        {
+            return _lines.SingleOrDefault(l => l.Product.ProductId == productId);
         }
 
         #endregion
