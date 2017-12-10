@@ -43,9 +43,17 @@ namespace SportsStore.Controllers
         [HttpPost]
         public IActionResult Edit(int id, EditViewModel editViewModel)
         {
-            Product product = _productRepository.GetById(id);
-            MapToProduct(editViewModel, product);
-            _productRepository.SaveChanges();
+            try
+            {
+                Product product = _productRepository.GetById(id);
+                MapToProduct(editViewModel, product);
+                _productRepository.SaveChanges();
+                TempData["message"] = $"You successfully updated product {product.Name}.";
+            }
+            catch
+            {
+                TempData["error"] = "Sorry, something went wrong, product was not updated...";
+            }
             return RedirectToAction(nameof(Index));
         }
 
