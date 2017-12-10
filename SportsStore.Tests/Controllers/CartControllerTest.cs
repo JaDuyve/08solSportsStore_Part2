@@ -19,6 +19,7 @@ namespace SportsStore.Tests.Controllers
             var context = new DummyApplicationDbContext();
 
             var productRepository = new Mock<IProductRepository>();
+            productRepository.Setup(p => p.GetById(4)).Returns(context.RunningShoes);
 
             _controller = new CartController(productRepository.Object);
             _cart = new Cart();
@@ -49,5 +50,23 @@ namespace SportsStore.Tests.Controllers
             Assert.Equal(50M, result.ViewData["Total"]);
         }
         #endregion
+
+        #region Add
+        [Fact]
+        public void Add_Successful_RedirectsToActionIndexOfStore()
+        {
+            var result = _controller.Add(4, 2, _cart) as RedirectToActionResult;
+            Assert.Equal("Index", result?.ActionName);
+            Assert.Equal("Store", result?.ControllerName);
+        }
+
+        [Fact]
+        public void Add_Successful_AddsProductToCart()
+        {
+            _controller.Add(4, 2, _cart);
+            Assert.Equal(2, _cart.NumberOfItems);
+        }
+        #endregion
+
     }
 }

@@ -21,5 +21,16 @@ namespace SportsStore.Controllers
             ViewData["Total"] = cart.TotalValue;
             return View(cart.CartLines);
         }
+
+        [HttpPost]
+        public IActionResult Add(int id, int quantity, Cart cart)
+        {
+            Product product = _productRepository.GetById(id);
+            if (product != null)
+            {
+                cart.AddLine(product, quantity);
+            }
+            return RedirectToAction(nameof(Index), "Store");
+        }
     }
 }
