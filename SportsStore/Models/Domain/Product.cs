@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace SportsStore.Models.Domain
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Product
     {
         #region Fields and Properties
@@ -9,6 +11,7 @@ namespace SportsStore.Models.Domain
         private int _price;
         private Category _category;
 
+        [JsonProperty]
         public int ProductId { get; set; }
         public string Name {
             get { return _name; }
@@ -36,7 +39,8 @@ namespace SportsStore.Models.Domain
         public Category Category {
             get { return _category; }
             set {
-                _category = value ?? throw new ArgumentException("Category is compulsory"); }
+                _category = value ?? throw new ArgumentException("Category is compulsory");
+            }
         }
         #endregion
 

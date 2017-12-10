@@ -25,6 +25,7 @@ namespace SportsStore
                options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddSession();
             services.AddMvc();
         }
 
@@ -42,7 +43,7 @@ namespace SportsStore
             }
             app.UseStatusCodePages();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

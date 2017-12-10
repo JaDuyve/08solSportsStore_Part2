@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SportsStore.Models.Domain
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Cart
     {
         #region Properties
+        [JsonProperty]
         private readonly IList<CartLine> _lines = new List<CartLine>();
         public IEnumerable<CartLine> CartLines => _lines.AsEnumerable();
         public int NumberOfItems => _lines.Count;
